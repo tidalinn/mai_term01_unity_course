@@ -7,6 +7,7 @@ using TMPro;
 public class LevelSystem : MonoBehaviour
 {
     public int level;
+    public float maxLevel = 99;
     public float currentXp;
     public float requiredXp;
 
@@ -58,7 +59,11 @@ public class LevelSystem : MonoBehaviour
             {
                 lerpTimer += Time.deltaTime;
                 float percentComplete = lerpTimer / 4;
-                frontXpBar.fillAmount = Mathf.Lerp(frontXp, xpFraction, percentComplete);
+
+                if (level < maxLevel)
+                    frontXpBar.fillAmount = Mathf.Lerp(frontXp, xpFraction, percentComplete);
+                else
+                    frontXpBar.fillAmount = currentXp;
             }
         }
     }
@@ -81,14 +86,17 @@ public class LevelSystem : MonoBehaviour
 
     public void LevelUp()
     {
-        level++;
-        frontXpBar.fillAmount = 0f;
-        
-        currentXp = Mathf.RoundToInt(currentXp - requiredXp);
-        GetComponent<PlayerHealth>().IncreaseHealth(level);
-        requiredXp = CalculateRequiredXp();
+        if (level < maxLevel)
+        {
+            level++;
+            frontXpBar.fillAmount = 0f;
+            
+            currentXp = Mathf.RoundToInt(currentXp - requiredXp);
+            GetComponent<PlayerHealth>().IncreaseHealth(level);
+            requiredXp = CalculateRequiredXp();
 
-        levelText.text = AddZeroToLevel(level);
+            levelText.text = AddZeroToLevel(level);
+        }
     }
 
     private int CalculateRequiredXp()
