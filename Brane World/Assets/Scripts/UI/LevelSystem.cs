@@ -6,9 +6,8 @@ using TMPro;
 
 public class LevelSystem : MonoBehaviour
 {
-    [Header("Leveling system")]
+    [Header("Level system")]
     public int level = 1;
-    public float maxLevel = 99;
     public float currentXp = 0;
     public float requiredXp = 130;
 
@@ -45,6 +44,7 @@ public class LevelSystem : MonoBehaviour
 
         if (currentXp > requiredXp)
             LevelUp();
+            CorrectFontSize(level);
     }
 
     public void UpdateXpUI()
@@ -61,10 +61,7 @@ public class LevelSystem : MonoBehaviour
                 lerpTimer += Time.deltaTime;
                 float percentComplete = lerpTimer / 4;
 
-                if (level < maxLevel)
-                    frontXpBar.fillAmount = Mathf.Lerp(frontXp, xpFraction, percentComplete);
-                else
-                    frontXpBar.fillAmount = currentXp;
+                frontXpBar.fillAmount = Mathf.Lerp(frontXp, xpFraction, percentComplete);
             }
         }
     }
@@ -87,18 +84,15 @@ public class LevelSystem : MonoBehaviour
 
     public void LevelUp()
     {
-        if (level < maxLevel)
-        {
-            level++;
-            frontXpBar.fillAmount = 0f;
-            
-            currentXp = Mathf.RoundToInt(currentXp - requiredXp);
-            GetComponent<PlayerHealth>().IncreaseHealth(level);
-            GetComponent<PlayerStats>().IncreaseStats(level);
-            requiredXp = CalculateRequiredXp();
+        level++;
+        frontXpBar.fillAmount = 0f;
+        
+        currentXp = Mathf.RoundToInt(currentXp - requiredXp);
+        GetComponent<PlayerHealth>().IncreaseHealth(level);
+        GetComponent<PlayerStats>().IncreaseStats(level);
+        requiredXp = CalculateRequiredXp();
 
-            levelText.text = AddZeroToLevel(level);
-        }
+        levelText.text = AddZeroToLevel(level);
     }
 
     private int CalculateRequiredXp()
@@ -118,5 +112,19 @@ public class LevelSystem : MonoBehaviour
             return "0" + level;
         else
             return "" + level;
+    }
+
+    private void SetFontSize(int fontSize)
+    {
+        levelText.fontSize = fontSize;
+        levelText.characterSpacing = -8;
+    }
+
+    private void CorrectFontSize(int level)
+    {
+        if (level > 99)
+        {
+            SetFontSize(40);
+        }
     }
 }

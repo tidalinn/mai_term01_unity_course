@@ -12,13 +12,26 @@ public class PlayerName : MonoBehaviour
     public Text inputText;
     public TextMeshProUGUI userName;
 
+    [Header("Switch Scene")]
+    public GameObject sceneSwitcherPrefab;
+    public string sceneName;
+
     // Update is called once per frame
     void Update() {
         userName.text = savedName;
+
+        if (userName.text.Length > 12)
+        {
+            userName.fontSize = 18;
+        }
     }
 
     public void SetName()
     {
-        savedName = inputText.text;
+        if (inputText.text.Length >= 1 && inputText.text.Length <= 20)
+        {
+            savedName = inputText.text;
+            sceneSwitcherPrefab.GetComponent<SceneSwitcher>().SwitchScene(sceneName);
+        }
     }
 }

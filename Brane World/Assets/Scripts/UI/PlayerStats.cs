@@ -21,6 +21,12 @@ public class PlayerStats : MonoBehaviour
         defenceText.text = "" + defence;
     }
 
+    // Update is called once per frame
+    void Update()
+    {
+        CorrectFontSize(attack, defence);
+    }
+
     public void IncreaseStats(int level)
     {
         attack += (int)Mathf.Floor((attack * 0.1f) * (100 - level) * 0.015f);
@@ -28,5 +34,29 @@ public class PlayerStats : MonoBehaviour
 
         attackText.text = "" + attack;
         defenceText.text = "" + defence;
+    }
+
+    private void SetFontSize(int fontSize)
+    {
+        attackText.fontSize = fontSize;
+        defenceText.fontSize = fontSize;
+    }
+
+    private void CorrectFontSize(int attack, int defence)
+    {
+        if (attack > 99 || defence > 99)
+        {
+            SetFontSize(32);
+        }
+
+        else if (attack > 999 || defence > 999)
+        {
+            SetFontSize(26);
+        }
+
+        else if (attack > 9999 || defence > 9999)
+        {
+            SetFontSize(22);
+        }
     }
 }

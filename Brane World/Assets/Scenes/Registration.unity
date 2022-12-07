@@ -926,8 +926,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 28
-  m_fontSizeBase: 28
+  m_fontSize: 36
+  m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1722,18 +1722,6 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 2001142001020068832}
-        m_TargetAssemblyTypeName: SceneChanger, Assembly-CSharp
-        m_MethodName: ChangeScene
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
           m_StringArgument: MainScene
           m_BoolArgument: 0
         m_CallState: 2
@@ -1861,8 +1849,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 28
-  m_fontSizeBase: 28
+  m_fontSize: 36
+  m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2738,7 +2726,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.7254902}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3124,6 +3112,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1337845686}
   m_CullTransparentMesh: 1
+--- !u!1 &1384578770 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1288604372568410323, guid: a15db86ef4baec342b2b1ceb5a193249,
+    type: 3}
+  m_PrefabInstance: {fileID: 2001142001020068831}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1502838822
 GameObject:
   m_ObjectHideFlags: 0
@@ -3182,6 +3176,8 @@ MonoBehaviour:
   savedName: 
   inputText: {fileID: 123969735}
   userName: {fileID: 1610163470}
+  sceneSwitcherPrefab: {fileID: 1384578770}
+  sceneName: MainScene
 --- !u!114 &1502838825
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3224,7 +3220,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   level: 1
-  maxLevel: 99
   currentXp: 0
   requiredXp: 130
   frontXpBar: {fileID: 258061923}
@@ -3321,7 +3316,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de7657e972a2407409ff081ad0785194, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  placedPrefab: {fileID: 209798540425749090, guid: 4d39bcd57cb95e940b557398ab6043e6,
+  placedPrefab: {fileID: 6526035627425031111, guid: 4d39bcd57cb95e940b557398ab6043e6,
     type: 3}
   arPlaneManager: {fileID: 1502838834}
 --- !u!114 &1502838834
@@ -3909,15 +3904,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 28
-  m_fontSizeBase: 28
+  m_fontSize: 26
+  m_fontSizeBase: 26
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
   m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: -5
   m_wordSpacing: 0
@@ -3967,7 +3962,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1610163469}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.00007724762}
+  m_LocalPosition: {x: 0, y: 0, z: -0}
   m_LocalScale: {x: 0.99999994, y: 0.99999994, z: 0.99999994}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3976,8 +3971,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 48.474854, y: 3.7999725}
-  m_SizeDelta: {x: 177.2784, y: 29.5974}
+  m_AnchoredPosition: {x: 62.3, y: 3}
+  m_SizeDelta: {x: 204.8438, y: 29.5974}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1670864518
 GameObject:
@@ -5249,7 +5244,7 @@ PrefabInstance:
     - target: {fileID: 1288604372568410323, guid: a15db86ef4baec342b2b1ceb5a193249,
         type: 3}
       propertyPath: m_Name
-      value: SceneChanger
+      value: SceneSwitcher
       objectReference: {fileID: 0}
     - target: {fileID: 1288604372568410323, guid: a15db86ef4baec342b2b1ceb5a193249,
         type: 3}
@@ -5313,15 +5308,3 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a15db86ef4baec342b2b1ceb5a193249, type: 3}
---- !u!114 &2001142001020068832 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5266852854277809445, guid: a15db86ef4baec342b2b1ceb5a193249,
-    type: 3}
-  m_PrefabInstance: {fileID: 2001142001020068831}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2404b806e3fa1b47999cc60a5f77335, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
