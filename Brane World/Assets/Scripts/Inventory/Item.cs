@@ -6,7 +6,8 @@ public enum EquipmentType
     Sword,
     Blade,
     Axe,
-    Halberd
+    Halberd,
+    Mace
 }
 
 [CreateAssetMenu]
@@ -16,6 +17,7 @@ public class Item : ScriptableObject
     public string itemName;
     public GameObject itemPrefab;
     public int level;
+    public string info;
 
     [Header("Bonuses")]
     public int attack;

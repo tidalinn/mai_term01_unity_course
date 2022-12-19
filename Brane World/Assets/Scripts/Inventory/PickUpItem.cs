@@ -1,26 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PickUpItem : MonoBehaviour
 {
-    [SerializeField] private Transform playerCameraTransform;
-    [SerializeField] private LayerMask pickUpLayerMask;
-
     // Update is called once per frame
     void Update()
     {
-        if (Input.touchCount > 0)
+        if (SceneManager.GetActiveScene().name == "MainScene")
         {
-            float pickUpDistance = .5f;
-
-            if (Physics.Raycast(Input.GetTouch(0).position, playerCameraTransform.forward, out RaycastHit raycastHit, pickUpDistance, pickUpLayerMask))
+            if (Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Began)
             {
-                if (raycastHit.transform.TryGetComponent(out GrabbableObject grabbableObject))
+                Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
+                RaycastHit hit;
+
+                if (Physics.Raycast(ray, out hit))
                 {
-                    grabbableObject.Grab();
+                    GameObject touchedObject = hit.transform.gameObject;
+
+                    if (touchedObject.GetComponent<GrabbableObject>())
+                    {
+                        touchedObject.GetComponent<GrabbableObject>().Grab(touchedObject);
+                    }
                 }
-            }   
-        } 
+            } 
+        }
     }
 }

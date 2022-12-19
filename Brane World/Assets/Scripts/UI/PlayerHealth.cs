@@ -86,7 +86,7 @@ public class PlayerHealth : MonoBehaviour
         }
         else
         {
-            GetComponent<InfoMessage>().printInfo("Вы были убиты");
+            GetComponent<InfoMessage>().DisplayInfo("info", "Вы были убиты");
         }
     }
 

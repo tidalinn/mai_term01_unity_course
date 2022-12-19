@@ -6,17 +6,33 @@ using TMPro;
 
 public class InfoMessage : MonoBehaviour
 {
-    [Header("Info")]
-    public Image infoMessagePrefab;
+    [Header("Display Info")]
+    public GameObject infoMessagePrefab;
+    public GameObject textMessagePrefab;
 
-    // Start is called before the first frame update
-    void Start()
+    public void DisplayInfo(string type, string info)
     {
+        switch (type)
+        {
+            case "info":
+                infoMessagePrefab.SetActive(true);
+                infoMessagePrefab.transform.GetChild(0).GetComponent<TextMeshProUGUI>().SetText(info);
+                break;
+
+            case "text":
+                textMessagePrefab.SetActive(true);
+                textMessagePrefab.transform.GetChild(0).GetComponent<TextMeshProUGUI>().SetText(info);
+                StartCoroutine(HideAfterDelay(textMessagePrefab, 2));
+                break;
+                
+            default:
+                break;
+        }
     }
 
-    public void printInfo(string info)
+    IEnumerator HideAfterDelay(GameObject message, int seconds)
     {
-        infoMessagePrefab.gameObject.SetActive(true);
-        infoMessagePrefab.transform.GetChild(0).GetComponent<TextMeshProUGUI>().SetText(info);
+        yield return new WaitForSeconds(seconds);
+        message.SetActive(false);
     }
 }

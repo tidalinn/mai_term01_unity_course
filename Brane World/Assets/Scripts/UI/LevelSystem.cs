@@ -7,7 +7,6 @@ using TMPro;
 public class LevelSystem : MonoBehaviour
 {
     [Header("Level system")]
-    public int level = 1;
     public float currentXp = 0;
     public float requiredXp = 130;
 
@@ -31,7 +30,11 @@ public class LevelSystem : MonoBehaviour
     {
         frontXpBar.fillAmount = currentXp / requiredXp;
         requiredXp = CalculateRequiredXp();
-        levelText.text = AddZeroToLevel(level);
+
+        if (PlayerPrefs.GetInt("userLevel") == 0)
+            PlayerPrefs.SetInt("userLevel", 1);
+        
+        levelText.text = AddZeroToLevel(PlayerPrefs.GetInt("userLevel"));
     }
 
     // Update is called once per frame
@@ -40,11 +43,13 @@ public class LevelSystem : MonoBehaviour
         UpdateXpUI();
 
         if (Input.GetKeyDown(KeyCode.Equals))
-            GainExperienceScalable(20, level);
+            GainExperienceScalable(20, PlayerPrefs.GetInt("userLevel"));
 
         if (currentXp > requiredXp)
             LevelUp();
-            CorrectFontSize(level);
+            CorrectFontSize(PlayerPrefs.GetInt("userLevel"));
+        
+        levelText.text = AddZeroToLevel(PlayerPrefs.GetInt("userLevel"));
     }
 
     public void UpdateXpUI()
@@ -68,9 +73,9 @@ public class LevelSystem : MonoBehaviour
 
     public void GainExperienceScalable(float xpGained, int passedLevel)
     {
-        if (passedLevel < level)
+        if (passedLevel < PlayerPrefs.GetInt("userLevel"))
         { 
-            float multiplier = 1 + (level - passedLevel) * 0.1f;
+            float multiplier = 1 + (PlayerPrefs.GetInt("userLevel") - passedLevel) * 0.1f;
             currentXp += xpGained * multiplier;
         }
         else 
@@ -84,22 +89,24 @@ public class LevelSystem : MonoBehaviour
 
     public void LevelUp()
     {
-        level++;
+        int newLevel = PlayerPrefs.GetInt("userLevel") + 1;
+        PlayerPrefs.SetInt("userLevel", newLevel);
+
         frontXpBar.fillAmount = 0f;
         
         currentXp = Mathf.RoundToInt(currentXp - requiredXp);
-        GetComponent<PlayerHealth>().IncreaseHealth(level);
-        GetComponent<PlayerStats>().IncreaseStats(level);
+        GetComponent<PlayerHealth>().IncreaseHealth(PlayerPrefs.GetInt("userLevel"));
+        GetComponent<PlayerStats>().IncreaseStats(PlayerPrefs.GetInt("userLevel"));
         requiredXp = CalculateRequiredXp();
 
-        levelText.text = AddZeroToLevel(level);
+        levelText.text = AddZeroToLevel(PlayerPrefs.GetInt("userLevel"));
     }
 
     private int CalculateRequiredXp()
     {
         int solverForRequiredXp = 0;
 
-        for (int levelCycle = 1; levelCycle <= level; levelCycle++)
+        for (int levelCycle = 1; levelCycle <= PlayerPrefs.GetInt("userLevel"); levelCycle++)
         {
             solverForRequiredXp += (int)Mathf.Floor(levelCycle + additionalMultiplier * Mathf.Pow(powerMultiplier, levelCycle / divisionMultiplier));
         }

@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13b9baad82f4b0d4c934d253ff9a20c0, type: 3}
   m_Name: Wideblade
   m_EditorClassIdentifier: 
-  itemName: "\u0428\u0438\u0440\u043E\u043A\u0438\u0439 \u043A\u0438\u043D\u0436\u0430\u043B"
+  itemName: "\u0420\u0436\u0430\u0432\u044B\u0439 \u043A\u043B\u0438\u043D\u043E\u043A"
   itemPrefab: {fileID: 100000, guid: 219bb5324c1aed145b79df7b7843f2af, type: 3}
   level: 3
-  attack: 2
-  defence: 10
-  xp: 8
+  info: 
+  attack: 30
+  defence: 15
+  xp: 9
   hp: 5
   EquipmentType: 2

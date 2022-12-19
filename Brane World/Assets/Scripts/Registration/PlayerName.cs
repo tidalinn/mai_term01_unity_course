@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class PlayerName : MonoBehaviour
 {
-    public string savedName;
-
     [Header("UI")]
     public Text inputText;
     public TextMeshProUGUI userName;
+    public GameObject setPlayerNameForm;
 
     [Header("Switch Scene")]
     public GameObject sceneSwitcherPrefab;
@@ -18,7 +18,7 @@ public class PlayerName : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-        userName.text = savedName;
+        userName.text = PlayerPrefs.GetString("userName");;
 
         if (userName.text.Length > 12)
         {
@@ -30,8 +30,13 @@ public class PlayerName : MonoBehaviour
     {
         if (inputText.text.Length >= 1 && inputText.text.Length <= 20)
         {
-            savedName = inputText.text;
-            sceneSwitcherPrefab.GetComponent<SceneSwitcher>().SwitchScene(sceneName);
+            PlayerPrefs.DeleteKey("userName");
+            PlayerPrefs.SetString("userName", inputText.text);
+
+            if (SceneManager.GetActiveScene().name != sceneName)
+                sceneSwitcherPrefab.GetComponent<SceneSwitcher>().SwitchScene(sceneName);
+            else
+                setPlayerNameForm.SetActive(false);
         }
     }
 }

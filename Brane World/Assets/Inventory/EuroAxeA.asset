@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13b9baad82f4b0d4c934d253ff9a20c0, type: 3}
+  m_Name: EuroAxeA
+  m_EditorClassIdentifier: 
+  itemName: "\u0416\u0435\u043B\u0435\u0437\u043D\u044B\u0439 \u043C\u043E\u043B\u043E\u0442"
+  itemPrefab: {fileID: 3873869818383723005, guid: ba9d7d9ddb471c547a3c7fc04762a77a,
+    type: 3}
+  level: 2
+  info: 
+  attack: 22
+  defence: 0
+  xp: 3
+  hp: 0
+  EquipmentType: 3

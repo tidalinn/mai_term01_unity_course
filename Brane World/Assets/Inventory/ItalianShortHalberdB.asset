@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13b9baad82f4b0d4c934d253ff9a20c0, type: 3}
+  m_Name: ItalianShortHalberdB
+  m_EditorClassIdentifier: 
+  itemName: "\u041A\u043E\u0440\u043E\u0442\u043A\u0430\u044F \u0430\u043B\u0435\u0431\u0430\u0440\u0434\u0430"
+  itemPrefab: {fileID: 4900472485208666248, guid: af1bbd5743a17c9498d2689b8e7e02b4,
+    type: 3}
+  level: 4
+  info: 
+  attack: 43
+  defence: 1
+  xp: 4
+  hp: 0
+  EquipmentType: 4

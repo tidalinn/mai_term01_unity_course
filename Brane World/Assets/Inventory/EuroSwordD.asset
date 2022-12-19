@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13b9baad82f4b0d4c934d253ff9a20c0, type: 3}
+  m_Name: EuroSwordD
+  m_EditorClassIdentifier: 
+  itemName: "\u0414\u0432\u0443\u0445\u0441\u0442\u043E\u0440\u043E\u043D\u043D\u0438\u0439
+    \u043C\u0435\u0447"
+  itemPrefab: {fileID: 2072103432873784996, guid: ff932219643689e43a975c93cd809be7,
+    type: 3}
+  level: 2
+  info: 
+  attack: 16
+  defence: 8
+  xp: 5
+  hp: 0
+  EquipmentType: 1

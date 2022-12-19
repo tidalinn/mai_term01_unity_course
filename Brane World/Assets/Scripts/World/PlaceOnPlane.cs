@@ -16,8 +16,8 @@ public class PlaceOnPlane : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        isEnabled = false;
         arRaycastManager = GetComponent<ARRaycastManager>();
+        isEnabled = false;
     }
 
     // Update is called once per frame

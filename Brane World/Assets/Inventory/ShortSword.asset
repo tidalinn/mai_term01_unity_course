@@ -16,7 +16,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 8013872819141217780, guid: 6df56e191e1b763448089b614a1eda15,
     type: 3}
   level: 1
-  attack: 5
+  info: 
+  attack: 8
   defence: 2
   xp: 3
   hp: 0

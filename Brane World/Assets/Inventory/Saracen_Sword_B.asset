@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13b9baad82f4b0d4c934d253ff9a20c0, type: 3}
+  m_Name: Saracen_Sword_B
+  m_EditorClassIdentifier: 
+  itemName: "\u041C\u0435\u0447 \u0441\u0430\u0440\u0430\u0446\u0438\u043D\u0430"
+  itemPrefab: {fileID: 446426267964797665, guid: 9aafd45132ed6d442b150f91bee71d5a,
+    type: 3}
+  level: 3
+  info: 
+  attack: 36
+  defence: 15
+  xp: 10
+  hp: 0
+  EquipmentType: 1
