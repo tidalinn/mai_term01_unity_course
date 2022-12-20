@@ -20,5 +20,5 @@ Contains folders and files with 1st term pet project:
 * `maskbox.obj` - stores a Cinema4D model
 * `my_assets.psd` - stores Unity sprite images
 
-[Game Design Document](https://docs.google.com/document/d/1gnrIkXIX7wiFwsKgMpIlm66yU-C8fyZhFkBBAL3MAMU/edit#)
+[Game Design Document](https://docs.google.com/document/d/1gnrIkXIX7wiFwsKgMpIlm66yU-C8fyZhFkBBAL3MAMU/edit#) | 
 [APK file](https://drive.google.com/file/d/1sMJbFZkcG5tCutmM27qpwjleQvXFiNVc/view?usp=sharing)
