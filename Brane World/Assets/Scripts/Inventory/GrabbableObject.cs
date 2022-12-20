@@ -4,102 +4,35 @@ using UnityEngine;
 
 public class GrabbableObject : MonoBehaviour
 {
-    [Header("UI")]
-    public GameObject equippedItem;
-    public LayerMask itemLayer;
-    
-    private bool isInstantiated;
-    private List<GameObject> equipped;
-
-    void Start()
+    public int GetLevel()
     {
-        isInstantiated = false;
+        return GetComponent<PinInfo>().item.level;
     }
 
-    void Update() 
+    public void AddBonuses()
     {
-        GameObject weapon = GameObject.Find("Heavy Sword");
-        {
-            if (equippedItem)
-            {
-                equipped = GetChildren();
-                /*
-                if (equipped.Count > 1)
-                {
-                    Destroy(equipped[0]);
-                }*/
+        GameObject xrOrigin = GameObject.Find("XR Origin");
+        Item item = GetComponent<PinInfo>().item;
 
-                if (!isInstantiated)
-                {
-                    GameObject userWeapon = Instantiate(weapon, equippedItem.transform);
-                    /*
-                    userWeapon.transform.position = new Vector3(0, 0.55f, 0);
-                    userWeapon.transform.rotation = new Quaternion(0, 0.9f, 0, 1);
-                    userWeapon.transform.localScale = equippedItem.transform.localScale / 2;
-                    userWeapon.layer = itemLayer.value;
+        xrOrigin.GetComponent<PlayerStats>().AddWeaponStats(item.attack, item.defence);
 
-                    AddBonuses();
-                    */
-                }
-            }
-        }
-    }
-    public void Grab(GameObject weapon) {}
-
-    /*
-    public void Grab(GameObject weapon) 
-    {
-        if (PlayerPrefs.GetInt("userLevel") >= weapon.GetComponent<PinInfo>().item.level)
-        {
-            if (equippedItem)
-            {
-                equipped = GetChildren();
-
-                if (equipped.Count > 1)
-                {
-                    Destroy(equipped[0]);
-                }
-
-                if (!isInstantiated)
-                {
-                    GameObject userWeapon = Instantiate(weapon, equippedItem.transform);
-                    userWeapon.transform.position = new Vector3(0, 0.55f, 0);
-                    userWeapon.transform.rotation = new Quaternion(0, 0.9f, 0, 1);
-                    userWeapon.transform.localScale = equippedItem.transform.localScale / 2;
-                    userWeapon.layer = itemLayer.value;
-
-                    AddBonuses();
-                }
-            }
-        }
-        else
-        {
-            GameObject.Find("XR Origin").GetComponent<InfoMessage>().DisplayInfo("text", "Недостаточный уровень");
-        }
-    }
-    */
-
-    private void AddBonuses()
-    {
-
+        DisplayStats("+");
     }
 
-    private void RemoveBonuses()
+    public void RemoveBonuses()
     {
+        GameObject xrOrigin = GameObject.Find("XR Origin");
+        Item item = GetComponent<PinInfo>().item;
 
+        xrOrigin.GetComponent<PlayerStats>().AddWeaponStats(-item.attack, -item.defence);
     }
 
-    private List<GameObject> GetChildren()
+    public void DisplayStats(string operation)
     {
-        Transform[] children = equippedItem.GetComponentsInChildren<Transform>();
-        equipped = new List<GameObject>();
+        Item item = GetComponent<PinInfo>().item;
 
-        foreach (Transform child in children)
-        { 
-            equipped.Add(child.gameObject);
-        }
-        equipped.RemoveAt(0);
+        string infoText = "Атака " + operation + item.attack + "\nЗащита " + operation + item.defence + "\nXP " + operation + item.xp + "\nHP " + operation + item.hp;
 
-        return equipped;
+        GameObject.Find("XR Origin").GetComponent<InfoMessage>().DisplayInfo("info", infoText);
     }
 }

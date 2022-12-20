@@ -17,6 +17,7 @@ public class InfoMessage : MonoBehaviour
             case "info":
                 infoMessagePrefab.SetActive(true);
                 infoMessagePrefab.transform.GetChild(0).GetComponent<TextMeshProUGUI>().SetText(info);
+                StartCoroutine(HideAfterDelay(infoMessagePrefab, 3));
                 break;
 
             case "text":

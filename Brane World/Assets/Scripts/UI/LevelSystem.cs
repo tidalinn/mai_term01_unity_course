@@ -6,10 +6,6 @@ using TMPro;
 
 public class LevelSystem : MonoBehaviour
 {
-    [Header("Level system")]
-    public float currentXp = 0;
-    public float requiredXp = 130;
-
     private float lerpTimer;
     private float delayTimer;
 
@@ -27,34 +23,46 @@ public class LevelSystem : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {
-        frontXpBar.fillAmount = currentXp / requiredXp;
-        requiredXp = CalculateRequiredXp();
-
+    {   
         if (PlayerPrefs.GetInt("userLevel") == 0)
+        {
             PlayerPrefs.SetInt("userLevel", 1);
+            PlayerPrefs.SetFloat("userXp", 0f);
+            PlayerPrefs.SetFloat("requiredXp", 130f);
+            PlayerPrefs.SetFloat("frontXpBar", 0f);
+        }
         
+        frontXpBar.fillAmount = PlayerPrefs.GetFloat("frontXpBar"); 
+        
+        PlayerPrefs.SetFloat("requiredXp", CalculateRequiredXp());  
+
         levelText.text = AddZeroToLevel(PlayerPrefs.GetInt("userLevel"));
     }
 
     // Update is called once per frame
     void Update()
-    {
+    {   
         UpdateXpUI();
+        
+        if (PlayerPrefs.GetString("enemyDead") == "true")
+        {
+            float xpGained = PlayerPrefs.GetInt("enemyAttack");
+            GainExperienceScalable(xpGained, PlayerPrefs.GetInt("userLevel"));
 
-        if (Input.GetKeyDown(KeyCode.Equals))
-            GainExperienceScalable(20, PlayerPrefs.GetInt("userLevel"));
+            string textInfo = "Вы одолели " + PlayerPrefs.GetInt("enemyName") + "\nXP +" + xpGained;
+            GetComponent<InfoMessage>().DisplayInfo("text", textInfo);
+        }
 
-        if (currentXp > requiredXp)
+        if (PlayerPrefs.GetFloat("userXp") > PlayerPrefs.GetFloat("requiredXp"))
             LevelUp();
             CorrectFontSize(PlayerPrefs.GetInt("userLevel"));
-        
+
         levelText.text = AddZeroToLevel(PlayerPrefs.GetInt("userLevel"));
     }
 
     public void UpdateXpUI()
     {
-        float xpFraction = currentXp / requiredXp;
+        float xpFraction = PlayerPrefs.GetFloat("userXp") / PlayerPrefs.GetFloat("requiredXp");
         float frontXp = frontXpBar.fillAmount;
 
         if (frontXp < xpFraction)
@@ -65,23 +73,28 @@ public class LevelSystem : MonoBehaviour
             {
                 lerpTimer += Time.deltaTime;
                 float percentComplete = lerpTimer / 4;
-
+                
                 frontXpBar.fillAmount = Mathf.Lerp(frontXp, xpFraction, percentComplete);
+                PlayerPrefs.SetFloat("frontXpBar", frontXpBar.fillAmount);
             }
         }
     }
 
     public void GainExperienceScalable(float xpGained, int passedLevel)
     {
+        float updatedUserXp;
+
         if (passedLevel < PlayerPrefs.GetInt("userLevel"))
         { 
             float multiplier = 1 + (PlayerPrefs.GetInt("userLevel") - passedLevel) * 0.1f;
-            currentXp += xpGained * multiplier;
+            updatedUserXp = PlayerPrefs.GetFloat("userXp") + xpGained * multiplier;
         }
         else 
         {
-            currentXp += xpGained;
+            updatedUserXp = PlayerPrefs.GetFloat("userXp") + xpGained;
         }
+
+        PlayerPrefs.SetFloat("userXp", updatedUserXp);
 
         lerpTimer = 0f;
         delayTimer = 0f;
@@ -92,12 +105,15 @@ public class LevelSystem : MonoBehaviour
         int newLevel = PlayerPrefs.GetInt("userLevel") + 1;
         PlayerPrefs.SetInt("userLevel", newLevel);
 
-        frontXpBar.fillAmount = 0f;
+        PlayerPrefs.SetFloat("frontXpBar", 0f);
+        frontXpBar.fillAmount = PlayerPrefs.GetFloat("frontXpBar");
         
-        currentXp = Mathf.RoundToInt(currentXp - requiredXp);
+        float updatedUserXp = Mathf.RoundToInt(PlayerPrefs.GetFloat("userXp") - PlayerPrefs.GetFloat("requiredXp"));
+        PlayerPrefs.SetFloat("userXp", updatedUserXp);
+
         GetComponent<PlayerHealth>().IncreaseHealth(PlayerPrefs.GetInt("userLevel"));
         GetComponent<PlayerStats>().IncreaseStats(PlayerPrefs.GetInt("userLevel"));
-        requiredXp = CalculateRequiredXp();
+        PlayerPrefs.SetFloat("requiredXp", CalculateRequiredXp());
 
         levelText.text = AddZeroToLevel(PlayerPrefs.GetInt("userLevel"));
     }

@@ -7,12 +7,10 @@ using TMPro;
 public class PlayerHealth : MonoBehaviour
 {
     [Header("Health Bar")]
-    public float maxHealth = 100f;
     public float chipSpeed = 2f;
     public Image frontHealthBar;
     public Image backHealthBar;
 
-    private float health;
     private float lerpTimer;
 
     [Header("Damage")]
@@ -24,33 +22,38 @@ public class PlayerHealth : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        health = maxHealth;
+        if (PlayerPrefs.GetInt("userLevel") == 1)
+            PlayerPrefs.SetFloat("maxHp", 100f);
+            PlayerPrefs.SetFloat("frontHealthBar", 1);
+            PlayerPrefs.SetFloat("backHealthBar", 1);
+
+        frontHealthBar.fillAmount = PlayerPrefs.GetFloat("frontHealthBar");
+        backHealthBar.fillAmount = PlayerPrefs.GetFloat("backHealthBar");
+
+        PlayerPrefs.SetFloat("userHp", PlayerPrefs.GetFloat("maxHp"));
     }
 
     // Update is called once per frame
     void Update()
     {
-        health = Mathf.Clamp(health, 0, maxHealth);
-
+        PlayerPrefs.SetFloat("userHp", Mathf.Clamp(PlayerPrefs.GetFloat("userHp"), 0, PlayerPrefs.GetFloat("maxHp")));
         UpdateHealthUI();
 
-        if (Input.GetKeyDown(KeyCode.A))
+        if (PlayerPrefs.GetFloat("enemyDamage") > 10)
         {
-            TakeDamage(Random.Range(5, 10));
+            RestoreHealth(Random.Range(1, 10));
         }
 
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            RestoreHealth(Random.Range(5, 10));
-        }
+        PlayerPrefs.SetFloat("frontHealthBar", frontHealthBar.fillAmount);
+        PlayerPrefs.SetFloat("backHealthBar", backHealthBar.fillAmount);
     }
 
     public void UpdateHealthUI()
     {
+        float healthFraction = PlayerPrefs.GetFloat("userHp") / PlayerPrefs.GetFloat("maxHp");
         float fillFront = frontHealthBar.fillAmount;
         float fillBack = backHealthBar.fillAmount;
-        float healthFraction = health / maxHealth;
-
+        
         if (fillBack > healthFraction)
         {
             frontHealthBar.fillAmount = healthFraction;
@@ -59,6 +62,7 @@ public class PlayerHealth : MonoBehaviour
 
             float percentComplete = lerpTimer / chipSpeed;
             percentComplete *= percentComplete;
+
             backHealthBar.fillAmount = Mathf.Lerp(fillBack, healthFraction, percentComplete);
         }
 
@@ -70,35 +74,39 @@ public class PlayerHealth : MonoBehaviour
 
             float percentComplete = lerpTimer / chipSpeed;
             percentComplete *= percentComplete;
+
             frontHealthBar.fillAmount = Mathf.Lerp(fillFront, backHealthBar.fillAmount, percentComplete);
         }
     }
 
     public void TakeDamage(float damage)
     {
-        if (health > 0)
+        if (PlayerPrefs.GetFloat("userHp") > 0)
         {
-            health -= damage;
+            float updatedHealth = PlayerPrefs.GetFloat("userHp") - damage;
+            PlayerPrefs.SetFloat("userHp", updatedHealth);
             lerpTimer = 0f;
 
             GameObject DamageTextInstance = Instantiate(damageTextPrefab, parentObject.transform);
-            DamageTextInstance.transform.GetChild(0).GetComponent<TextMeshProUGUI>().SetText("Вас атаковали -" + damage);
+            DamageTextInstance.transform.GetChild(0).GetComponent<TextMeshProUGUI>().SetText("Вас атаковали -" + (int)damage);
         }
         else
         {
-            GetComponent<InfoMessage>().DisplayInfo("info", "Вы были убиты");
+            GetComponent<InfoMessage>().DisplayInfo("info", "Вас убил " + PlayerPrefs.GetString("enemyName"));
+            PlayerPrefs.SetFloat("userHp", 50);
         }
     }
 
     public void RestoreHealth(float healAmount)
     {
-        health += healAmount;
+        float updatedUserHp = PlayerPrefs.GetFloat("userHp") + healAmount;
+        PlayerPrefs.SetFloat("userHp", updatedUserHp);
         lerpTimer = 0f;
     }
 
     public void IncreaseHealth(int level)
     {
-        maxHealth += ((health * 0.01f) * (100 - level) * 0.1f);
-        health = maxHealth;
+        float updatedMaxHp = PlayerPrefs.GetFloat("maxHp") + ((PlayerPrefs.GetFloat("userHp") * 0.01f) * (100 - level) * 0.1f);
+        PlayerPrefs.SetFloat("userHp", updatedMaxHp);
     }
 }

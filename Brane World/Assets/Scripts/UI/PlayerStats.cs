@@ -6,10 +6,6 @@ using TMPro;
 
 public class PlayerStats : MonoBehaviour
 {
-    [Header("Stats")]
-    public int attack = 50;
-    public int defence = 80;
-
     [Header("UI")]
     public TextMeshProUGUI attackText;
     public TextMeshProUGUI defenceText;
@@ -17,23 +13,43 @@ public class PlayerStats : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        attackText.text = "" + attack;
-        defenceText.text = "" + defence;
+        if (PlayerPrefs.GetInt("userLevel") == 0)
+        {
+            PlayerPrefs.SetInt("userAttack", 30);
+            PlayerPrefs.SetInt("userDefence", 50);
+        }
+        attackText.text = "" + PlayerPrefs.GetInt("userAttack");
+        defenceText.text = "" + PlayerPrefs.GetInt("userDefence");
     }
 
     // Update is called once per frame
     void Update()
     {
-        CorrectFontSize(attack, defence);
+        CorrectFontSize(PlayerPrefs.GetInt("userAttack"), PlayerPrefs.GetInt("userDefence"));
     }
 
     public void IncreaseStats(int level)
     {
-        attack += (int)Mathf.Floor((attack * 0.1f) * (100 - level) * 0.015f);
-        defence += (int)Mathf.Floor((defence * 0.1f) * (100 - level) * 0.01f);
+        int updatedAttack = PlayerPrefs.GetInt("userAttack") + (int)Mathf.Floor((PlayerPrefs.GetInt("userAttack") * 0.1f) * (100 - level) * 0.015f);
+        PlayerPrefs.SetInt("userAttack", updatedAttack);
+        
+        int updatedDefence = PlayerPrefs.GetInt("userDefence") + (int)Mathf.Floor((PlayerPrefs.GetInt("userDefence") * 0.1f) * (100 - level) * 0.01f);
+        PlayerPrefs.SetInt("userDefence", updatedDefence);
 
-        attackText.text = "" + attack;
-        defenceText.text = "" + defence;
+        attackText.text = "" + PlayerPrefs.GetInt("userAttack");
+        defenceText.text = "" + PlayerPrefs.GetInt("userDefence");
+    }
+
+    public void AddWeaponStats(int attack, int defence)
+    {
+        int updatedAttack = PlayerPrefs.GetInt("userAttack") + attack;
+        PlayerPrefs.SetInt("userAttack", updatedAttack);
+
+        int updatedDefence = PlayerPrefs.GetInt("userDefence") + defence;
+        PlayerPrefs.SetInt("userDefence", updatedDefence);
+
+        attackText.text = "" + PlayerPrefs.GetInt("userAttack");
+        defenceText.text = "" + PlayerPrefs.GetInt("userDefence");
     }
 
     private void SetFontSize(int fontSize)

@@ -1,22 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class EquippedWeapon : MonoBehaviour
 {
-    public GameObject weaponName;
-    public GameObject weaponPowerValue;
-    public GameObject weaponInfo;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [Header("UI")]
+    public TextMeshProUGUI weaponName;
+    public TextMeshProUGUI weaponPowerValue;
+    public TextMeshProUGUI weaponInfo;
 
     // Update is called once per frame
-    void Update()
+    public void SetWeapon(GameObject weapon)
     {
-        
+        Item item = weapon.GetComponent<PinInfo>().item;
+
+        weaponName.text = item.itemName;
+        weaponPowerValue.text = "" + item.attack;
+        weaponInfo.text = "Защита: " + item.defence + "| XP: " + item.xp + "| HP: " + item.hp;
     }
 }

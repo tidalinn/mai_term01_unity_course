@@ -18,12 +18,7 @@ public class PlayerName : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-        userName.text = PlayerPrefs.GetString("userName");;
-
-        if (userName.text.Length > 12)
-        {
-            userName.fontSize = 18;
-        }
+        userName.text = PlayerPrefs.GetString("userName");
     }
 
     public void SetName()
