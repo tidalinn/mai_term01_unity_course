@@ -29,10 +29,13 @@ public class GrabbableObject : MonoBehaviour
 
     public void DisplayStats(string operation)
     {
-        Item item = GetComponent<PinInfo>().item;
+        if (PlayerPrefs.GetInt("weaponLevel") == 0)
+        {
+            Item item = GetComponent<PinInfo>().item;
 
-        string infoText = "Атака " + operation + item.attack + "\nЗащита " + operation + item.defence + "\nXP " + operation + item.xp + "\nHP " + operation + item.hp;
+            string infoText = "Атака " + operation + item.attack + "\nЗащита " + operation + item.defence + "\nXP " + operation + item.xp + "\nHP " + operation + item.hp;
 
-        GameObject.Find("XR Origin").GetComponent<InfoMessage>().DisplayInfo("info", infoText);
+            GameObject.Find("XR Origin").GetComponent<InfoMessage>().DisplayInfo("info", infoText);
+        }
     }
 }

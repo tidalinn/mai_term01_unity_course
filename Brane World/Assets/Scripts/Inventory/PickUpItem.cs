@@ -5,23 +5,19 @@ using UnityEngine.SceneManagement;
 
 public class PickUpItem : MonoBehaviour
 {
-    [Header("UI")]
-    public GameObject equippedItem;
-    public string itemLayerName;
-    public GameObject noWeapon;
-
-    private bool isInstantiated;
+    private GameObject equippedItem;
+    private bool isGrabbed;
 
     // Start is called before the first frame update
     void Start()
     {
-        isInstantiated = false;
-        noWeapon.SetActive(true);
+        equippedItem = GetComponent<EquippedWeapon>().equippedItem;
+        isGrabbed = false;
     }
 
     // Update is called once per frame
     void Update()
-    {
+    { 
         if (SceneManager.GetActiveScene().name == "MainScene")
         {
             if (Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Began)
@@ -34,9 +30,7 @@ public class PickUpItem : MonoBehaviour
                     GameObject touchedObject = hit.transform.gameObject;
 
                     if (touchedObject.GetComponent<GrabbableObject>())
-                    {
                         Grab(touchedObject);
-                    }
                 }
             } 
         }
@@ -46,42 +40,27 @@ public class PickUpItem : MonoBehaviour
     {
         if (PlayerPrefs.GetInt("userLevel") >= weapon.GetComponent<GrabbableObject>().GetLevel())
         {
-            if (equippedItem.transform.childCount > 0) {
+            if (equippedItem.transform.childCount > 0) 
+            {
                 weapon.GetComponent<GrabbableObject>().RemoveBonuses();
 
                 foreach (Transform item in equippedItem.transform) 
                 {
                     DestroyImmediate(item.gameObject);
-                    isInstantiated = false;
-
-                    noWeapon.SetActive(true);
+                    isGrabbed = false;
                 }
             }
 
-            if (equippedItem.transform.childCount < 1 && !isInstantiated)
+            if (equippedItem.transform.childCount < 1 && !isGrabbed)
             {
                 weapon.GetComponent<GrabbableObject>().AddBonuses();
-                InstantiateItem(weapon);
-                isInstantiated = true;
-
-                noWeapon.SetActive(false);
                 GetComponent<EquippedWeapon>().SetWeapon(weapon);
-
-                PlayerPrefs.SetString("userHasWeapon", "true");
+                isGrabbed = true;
             }
         }
         else
         {
             GetComponent<InfoMessage>().DisplayInfo("text", "Недостаточный уровень");
         }
-    }
-
-    private void InstantiateItem(GameObject weapon)
-    {
-        GameObject userWeapon = Instantiate(weapon.GetComponent<PinInfo>().item.itemPrefab, equippedItem.transform);
-        userWeapon.layer = LayerMask.NameToLayer(itemLayerName);
-        userWeapon.transform.position = equippedItem.transform.position;
-        userWeapon.transform.Rotate(0, 90f, 0);
-        userWeapon.transform.localScale = userWeapon.transform.localScale / 2.5f;
     }
 }

@@ -44,14 +44,8 @@ public class LevelSystem : MonoBehaviour
     {   
         UpdateXpUI();
         
-        if (PlayerPrefs.GetString("enemyDead") == "true")
-        {
-            float xpGained = PlayerPrefs.GetInt("enemyAttack");
-            GainExperienceScalable(xpGained, PlayerPrefs.GetInt("userLevel"));
-
-            string textInfo = "Вы одолели " + PlayerPrefs.GetInt("enemyName") + "\nXP +" + xpGained;
-            GetComponent<InfoMessage>().DisplayInfo("text", textInfo);
-        }
+        if (Input.GetKeyDown(KeyCode.Equals))
+            GainExperienceScalable(20, PlayerPrefs.GetInt("userLevel"));
 
         if (PlayerPrefs.GetFloat("userXp") > PlayerPrefs.GetFloat("requiredXp"))
             LevelUp();

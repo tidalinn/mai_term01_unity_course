@@ -24,8 +24,6 @@ public class PlayerHealth : MonoBehaviour
     {
         if (PlayerPrefs.GetInt("userLevel") == 1)
             PlayerPrefs.SetFloat("maxHp", 100f);
-            PlayerPrefs.SetFloat("frontHealthBar", 1);
-            PlayerPrefs.SetFloat("backHealthBar", 1);
 
         frontHealthBar.fillAmount = PlayerPrefs.GetFloat("frontHealthBar");
         backHealthBar.fillAmount = PlayerPrefs.GetFloat("backHealthBar");
@@ -39,24 +37,32 @@ public class PlayerHealth : MonoBehaviour
         PlayerPrefs.SetFloat("userHp", Mathf.Clamp(PlayerPrefs.GetFloat("userHp"), 0, PlayerPrefs.GetFloat("maxHp")));
         UpdateHealthUI();
 
-        if (PlayerPrefs.GetFloat("enemyDamage") > 10)
+        if (Input.GetKeyDown(KeyCode.A))
         {
-            RestoreHealth(Random.Range(1, 10));
+            TakeDamage(Random.Range(5, 10));
         }
 
-        PlayerPrefs.SetFloat("frontHealthBar", frontHealthBar.fillAmount);
-        PlayerPrefs.SetFloat("backHealthBar", backHealthBar.fillAmount);
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            RestoreHealth(Random.Range(5, 10));
+        }
     }
 
     public void UpdateHealthUI()
     {
         float healthFraction = PlayerPrefs.GetFloat("userHp") / PlayerPrefs.GetFloat("maxHp");
+        
         float fillFront = frontHealthBar.fillAmount;
         float fillBack = backHealthBar.fillAmount;
         
+        // reduce HP
         if (fillBack > healthFraction)
         {
-            frontHealthBar.fillAmount = healthFraction;
+            if (PlayerPrefs.GetFloat("backHealthBar") < healthFraction)
+                frontHealthBar.fillAmount = PlayerPrefs.GetFloat("backHealthBar");
+            else
+                frontHealthBar.fillAmount = healthFraction;
+
             backHealthBar.color = new Color(1f, 0f, 0f, 0.185f);
             lerpTimer += Time.deltaTime;
 
@@ -66,8 +72,14 @@ public class PlayerHealth : MonoBehaviour
             backHealthBar.fillAmount = Mathf.Lerp(fillBack, healthFraction, percentComplete);
         }
 
+        // recover HP
         if (fillFront < healthFraction)
         {
+            if (PlayerPrefs.GetFloat("frontHealthBar") > healthFraction)
+                frontHealthBar.fillAmount = PlayerPrefs.GetFloat("frontHealthBar");
+            else
+                frontHealthBar.fillAmount = healthFraction;
+
             backHealthBar.color = new Color(0.5f, 0.5f, 0.5f, 0.185f);
             backHealthBar.fillAmount = healthFraction;
             lerpTimer += Time.deltaTime;
@@ -77,6 +89,9 @@ public class PlayerHealth : MonoBehaviour
 
             frontHealthBar.fillAmount = Mathf.Lerp(fillFront, backHealthBar.fillAmount, percentComplete);
         }
+
+        PlayerPrefs.SetFloat("frontHealthBar", frontHealthBar.fillAmount);
+        PlayerPrefs.SetFloat("backHealthBar", backHealthBar.fillAmount);
     }
 
     public void TakeDamage(float damage)
@@ -88,12 +103,11 @@ public class PlayerHealth : MonoBehaviour
             lerpTimer = 0f;
 
             GameObject DamageTextInstance = Instantiate(damageTextPrefab, parentObject.transform);
-            DamageTextInstance.transform.GetChild(0).GetComponent<TextMeshProUGUI>().SetText("Вас атаковали -" + (int)damage);
+            DamageTextInstance.transform.GetChild(0).GetComponent<TextMeshProUGUI>().SetText("Вас атаковали -" + damage);
         }
         else
         {
-            GetComponent<InfoMessage>().DisplayInfo("info", "Вас убил " + PlayerPrefs.GetString("enemyName"));
-            PlayerPrefs.SetFloat("userHp", 50);
+            GetComponent<InfoMessage>().DisplayInfo("info", "Вы были убиты");
         }
     }
 

@@ -10,13 +10,11 @@ public class LoadObject : MonoBehaviour
     public string sceneName;
 
     private GameObject prefabScene;
-    private GameObject xrOrigin;
     
     // Start is called before the first frame update
     void Start()
     {
         prefabScene = (GameObject)Resources.Load(prefabName);
-        xrOrigin = GameObject.Find("XR Origin");
     }
 
     // Update is called once per frame
@@ -24,7 +22,7 @@ public class LoadObject : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name == sceneName)
         {
-            xrOrigin.GetComponent<PlaceOnPlane>().scenePrefab = prefabScene;
+            GetComponent<PlaceOnPlane>().scenePrefab = prefabScene;
         }
     }
 }

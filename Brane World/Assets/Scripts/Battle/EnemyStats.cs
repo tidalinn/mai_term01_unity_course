@@ -8,8 +8,7 @@ public class EnemyStats : MonoBehaviour
 {
     [Header("UI")]
     public string enemyName;
-    public TextMeshPro levelText;
-    public TextMeshPro damageText;
+    public TextMeshPro hpText;
 
     private Animator animator;
 
@@ -24,7 +23,6 @@ public class EnemyStats : MonoBehaviour
         }
 
         PlayerPrefs.SetString("enemyName", enemyName);
-        levelText.text = "lvl " + PlayerPrefs.GetString("enemyLevel");
 
         animator = GetComponent<Animator>();
 
@@ -51,12 +49,14 @@ public class EnemyStats : MonoBehaviour
                     {
                         if (PlayerPrefs.GetString("userHasWeapon") == "true")
                         {
+                            /*
                             PlayerPrefs.SetFloat("enemyDamage", Random.Range(10, PlayerPrefs.GetInt("userAttack")));
                             TakeDamage(PlayerPrefs.GetFloat("enemyDamage"));
                             
                             AddDelay(Random.Range(0, 2));
                             PlayerPrefs.SetFloat("userDamage", Random.Range(10, PlayerPrefs.GetInt("enemyAttack")));
                             user.GetComponent<PlayerHealth>().TakeDamage(PlayerPrefs.GetFloat("userDamage"));
+                            */
                         }
                         else
                         {
@@ -72,8 +72,6 @@ public class EnemyStats : MonoBehaviour
     {
         if (damage < PlayerPrefs.GetFloat("enemyHp"))
         {
-            damageText.text = "-" + (int)damage;
-
             if (damage > 20 && damage < 30)
                 animator.runtimeAnimatorController = Resources.Load("1H@RHAttacks") as RuntimeAnimatorController;
 
@@ -92,8 +90,6 @@ public class EnemyStats : MonoBehaviour
             PlayerPrefs.SetInt("enemyLevel", 2);
             PlayerPrefs.SetInt("enemyAttack", PlayerPrefs.GetInt("enemyAttack") + 20);
             PlayerPrefs.SetFloat("enemyHp", PlayerPrefs.GetFloat("enemyHp") + 30);
-
-            levelText.text = "" + PlayerPrefs.GetString("enemyName");
 
             AddDelay(5);
             animator.runtimeAnimatorController = Resources.Load("1H@CombatIdle") as RuntimeAnimatorController;

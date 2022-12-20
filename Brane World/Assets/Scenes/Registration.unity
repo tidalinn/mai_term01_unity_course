@@ -2469,6 +2469,16 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7478598215225525986, guid: 14fc2f18293eb3444b449c3d9ba3fb9e,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 48
+      objectReference: {fileID: 0}
+    - target: {fileID: 7478598215225525986, guid: 14fc2f18293eb3444b449c3d9ba3fb9e,
+        type: 3}
+      propertyPath: m_fontSizeBase
+      value: 48
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14fc2f18293eb3444b449c3d9ba3fb9e, type: 3}
 --- !u!1 &910959510
@@ -3219,6 +3229,80 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1180399352}
   m_CullTransparentMesh: 1
+--- !u!1001 &1236548423
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 8069225508440364421, guid: fb93ddec301f92b4bb0793d2b6dc7f92,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8069225508440364421, guid: fb93ddec301f92b4bb0793d2b6dc7f92,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8069225508440364421, guid: fb93ddec301f92b4bb0793d2b6dc7f92,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8069225508440364421, guid: fb93ddec301f92b4bb0793d2b6dc7f92,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8069225508440364421, guid: fb93ddec301f92b4bb0793d2b6dc7f92,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8069225508440364421, guid: fb93ddec301f92b4bb0793d2b6dc7f92,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8069225508440364421, guid: fb93ddec301f92b4bb0793d2b6dc7f92,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8069225508440364421, guid: fb93ddec301f92b4bb0793d2b6dc7f92,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8069225508440364421, guid: fb93ddec301f92b4bb0793d2b6dc7f92,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8069225508440364421, guid: fb93ddec301f92b4bb0793d2b6dc7f92,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8069225508440364421, guid: fb93ddec301f92b4bb0793d2b6dc7f92,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8069225508440364423, guid: fb93ddec301f92b4bb0793d2b6dc7f92,
+        type: 3}
+      propertyPath: m_Name
+      value: Root
+      objectReference: {fileID: 0}
+    - target: {fileID: 8069225508440364423, guid: fb93ddec301f92b4bb0793d2b6dc7f92,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: fb93ddec301f92b4bb0793d2b6dc7f92, type: 3}
 --- !u!1 &1287186845
 GameObject:
   m_ObjectHideFlags: 0
@@ -3965,9 +4049,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c9cc5654018c254f9e510b407b7148e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  equippedItem: {fileID: 261488047}
-  itemLayerName: Weapon
-  noWeapon: {fileID: 1287186845}
 --- !u!114 &1502838845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3983,6 +4064,9 @@ MonoBehaviour:
   weaponName: {fileID: 4696932308399623533}
   weaponPowerValue: {fileID: 4696932310203635443}
   weaponInfo: {fileID: 4696932309315230328}
+  equippedItem: {fileID: 261488047}
+  itemLayerName: Weapon
+  noWeapon: {fileID: 1287186845}
 --- !u!114 &1502838846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5789,7 +5873,7 @@ Transform:
   - {fileID: 1539584798}
   - {fileID: 360319941}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2073462188
 MonoBehaviour:
