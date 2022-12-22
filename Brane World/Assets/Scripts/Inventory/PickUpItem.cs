@@ -6,13 +6,11 @@ using UnityEngine.SceneManagement;
 public class PickUpItem : MonoBehaviour
 {
     private GameObject equippedItem;
-    private bool isGrabbed;
 
     // Start is called before the first frame update
     void Start()
     {
         equippedItem = GetComponent<EquippedWeapon>().equippedItem;
-        isGrabbed = false;
     }
 
     // Update is called once per frame
@@ -42,20 +40,18 @@ public class PickUpItem : MonoBehaviour
         {
             if (equippedItem.transform.childCount > 0) 
             {
-                weapon.GetComponent<GrabbableObject>().RemoveBonuses();
+                GameObject.Find(PlayerPrefs.GetString("weaponPrefabName")).GetComponent<GrabbableObject>().RemoveBonuses();
 
                 foreach (Transform item in equippedItem.transform) 
                 {
                     DestroyImmediate(item.gameObject);
-                    isGrabbed = false;
                 }
             }
 
-            if (equippedItem.transform.childCount < 1 && !isGrabbed)
+            if (equippedItem.transform.childCount < 1)
             {
                 weapon.GetComponent<GrabbableObject>().AddBonuses();
                 GetComponent<EquippedWeapon>().SetWeapon(weapon);
-                isGrabbed = true;
             }
         }
         else

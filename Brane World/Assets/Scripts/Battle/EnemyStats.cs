@@ -3,14 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine.AI;
 
 public class EnemyStats : MonoBehaviour
 {
     [Header("UI")]
     public string enemyName;
-    public TextMeshPro hpText;
 
+    [Header("Combat")]
+    public float attackCD = 2f;
+    public float attackRange = 3.5f;
+
+    private GameObject xrOrigin;
     private Animator animator;
+    private float timePassed;
+    private float initialEnemyHp;
 
     // Start is called before the first frame update
     void Start()
@@ -23,11 +30,12 @@ public class EnemyStats : MonoBehaviour
         }
 
         PlayerPrefs.SetString("enemyName", enemyName);
+        PlayerPrefs.SetFloat("userXpGained", 0);
 
+        xrOrigin = GameObject.Find("XR Origin");
         animator = GetComponent<Animator>();
 
-        animator.runtimeAnimatorController = Resources.Load("1H@CombatIdle") as RuntimeAnimatorController;
-    
+        initialEnemyHp = PlayerPrefs.GetFloat("enemyHp");
     }
 
     // Update is called once per frame
@@ -35,69 +43,34 @@ public class EnemyStats : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name == "MainScene")
         {
-            if (Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Began)
+            if (timePassed >= attackCD && PlayerPrefs.GetFloat("enemyHp") > 0)
             {
-                Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
-                RaycastHit hit;
-
-                if (Physics.Raycast(ray, out hit))
+                if (Vector3.Distance(Camera.main.transform.position, transform.position) <= attackRange)
                 {
-                    GameObject enemy = hit.transform.gameObject;
-                    GameObject user = GameObject.Find("XR Origin");
-
-                    if (enemy.GetComponent<EnemyStats>())
-                    {
-                        if (PlayerPrefs.GetString("userHasWeapon") == "true")
-                        {
-                            /*
-                            PlayerPrefs.SetFloat("enemyDamage", Random.Range(10, PlayerPrefs.GetInt("userAttack")));
-                            TakeDamage(PlayerPrefs.GetFloat("enemyDamage"));
-                            
-                            AddDelay(Random.Range(0, 2));
-                            PlayerPrefs.SetFloat("userDamage", Random.Range(10, PlayerPrefs.GetInt("enemyAttack")));
-                            user.GetComponent<PlayerHealth>().TakeDamage(PlayerPrefs.GetFloat("userDamage"));
-                            */
-                        }
-                        else
-                        {
-                            user.GetComponent<InfoMessage>().DisplayInfo("text", "У вас нет оружия");
-                        }
-                    }
+                    AttackUser();
+                    PlayerPrefs.SetInt("battle", 1);
                 }
             }
+
+            timePassed += Time.deltaTime;
+            transform.LookAt(Camera.main.transform);
         }
     }
 
-    public void TakeDamage(float damage)
+    public void AttackUser()
     {
-        if (damage < PlayerPrefs.GetFloat("enemyHp"))
+        if (PlayerPrefs.GetFloat("userHp") > 0)
         {
-            if (damage > 20 && damage < 30)
-                animator.runtimeAnimatorController = Resources.Load("1H@RHAttacks") as RuntimeAnimatorController;
-
-            else if (damage < 2)
-                animator.runtimeAnimatorController = Resources.Load("1H@ShieldAttacks") as RuntimeAnimatorController;
-
-            float updatedHp = PlayerPrefs.GetFloat("enemyHp") - damage;
-            PlayerPrefs.SetFloat("enemyHp", updatedHp);
-            Debug.Log(damage + " " + PlayerPrefs.GetFloat("enemyHp"));
+            animator.SetTrigger("attack");
+            xrOrigin.GetComponent<PlayerHealth>().TakeDamage(Random.Range(10, PlayerPrefs.GetInt("enemyAttack")));
+            
+            timePassed = 0;
+            PlayerPrefs.SetInt("battle", 1);
         }
-        else 
+        else
         {
-            PlayerPrefs.SetString("enemyDead", "true");
-            animator.runtimeAnimatorController = Resources.Load("MW@Death01") as RuntimeAnimatorController;
-
-            PlayerPrefs.SetInt("enemyLevel", 2);
-            PlayerPrefs.SetInt("enemyAttack", PlayerPrefs.GetInt("enemyAttack") + 20);
-            PlayerPrefs.SetFloat("enemyHp", PlayerPrefs.GetFloat("enemyHp") + 30);
-
-            AddDelay(5);
-            animator.runtimeAnimatorController = Resources.Load("1H@CombatIdle") as RuntimeAnimatorController;
+            PlayerPrefs.SetInt("battle", 0);
+            xrOrigin.GetComponent<InfoMessage>().DisplayInfo("info", "Вас убил " + PlayerPrefs.GetString("enemyName"));
         }
-    }
-
-    IEnumerator AddDelay(int seconds)
-    {
-        yield return new WaitForSeconds(seconds);
     }
 }

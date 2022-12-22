@@ -10,6 +10,7 @@ public class PlayerHealth : MonoBehaviour
     public float chipSpeed = 2f;
     public Image frontHealthBar;
     public Image backHealthBar;
+    public GameObject barXpHp;
 
     private float lerpTimer;
 
@@ -29,23 +30,21 @@ public class PlayerHealth : MonoBehaviour
         backHealthBar.fillAmount = PlayerPrefs.GetFloat("backHealthBar");
 
         PlayerPrefs.SetFloat("userHp", PlayerPrefs.GetFloat("maxHp"));
+        barXpHp.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (PlayerPrefs.GetInt("battle") == 1 || frontHealthBar.fillAmount < 1)
+            barXpHp.SetActive(true);
+        else
+            barXpHp.SetActive(false);
+
         PlayerPrefs.SetFloat("userHp", Mathf.Clamp(PlayerPrefs.GetFloat("userHp"), 0, PlayerPrefs.GetFloat("maxHp")));
         UpdateHealthUI();
-
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            TakeDamage(Random.Range(5, 10));
-        }
-
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            RestoreHealth(Random.Range(5, 10));
-        }
+        
+        RestoreHealth(Random.Range(5, 10));
     }
 
     public void UpdateHealthUI()
@@ -55,14 +54,9 @@ public class PlayerHealth : MonoBehaviour
         float fillFront = frontHealthBar.fillAmount;
         float fillBack = backHealthBar.fillAmount;
         
-        // reduce HP
         if (fillBack > healthFraction)
         {
-            if (PlayerPrefs.GetFloat("backHealthBar") < healthFraction)
-                frontHealthBar.fillAmount = PlayerPrefs.GetFloat("backHealthBar");
-            else
-                frontHealthBar.fillAmount = healthFraction;
-
+            frontHealthBar.fillAmount = healthFraction;
             backHealthBar.color = new Color(1f, 0f, 0f, 0.185f);
             lerpTimer += Time.deltaTime;
 
@@ -72,16 +66,10 @@ public class PlayerHealth : MonoBehaviour
             backHealthBar.fillAmount = Mathf.Lerp(fillBack, healthFraction, percentComplete);
         }
 
-        // recover HP
         if (fillFront < healthFraction)
         {
-            if (PlayerPrefs.GetFloat("frontHealthBar") > healthFraction)
-                frontHealthBar.fillAmount = PlayerPrefs.GetFloat("frontHealthBar");
-            else
-                frontHealthBar.fillAmount = healthFraction;
-
-            backHealthBar.color = new Color(0.5f, 0.5f, 0.5f, 0.185f);
             backHealthBar.fillAmount = healthFraction;
+            backHealthBar.color = new Color(0.5f, 0.5f, 0.5f, 0.185f);
             lerpTimer += Time.deltaTime;
 
             float percentComplete = lerpTimer / chipSpeed;
@@ -103,24 +91,38 @@ public class PlayerHealth : MonoBehaviour
             lerpTimer = 0f;
 
             GameObject DamageTextInstance = Instantiate(damageTextPrefab, parentObject.transform);
-            DamageTextInstance.transform.GetChild(0).GetComponent<TextMeshProUGUI>().SetText("Вас атаковали -" + damage);
-        }
-        else
-        {
-            GetComponent<InfoMessage>().DisplayInfo("info", "Вы были убиты");
+            DamageTextInstance.transform.GetChild(0).GetComponent<TextMeshProUGUI>().SetText("Вас атаковали -" + Mathf.RoundToInt(damage));
         }
     }
 
     public void RestoreHealth(float healAmount)
     {
-        float updatedUserHp = PlayerPrefs.GetFloat("userHp") + healAmount;
-        PlayerPrefs.SetFloat("userHp", updatedUserHp);
-        lerpTimer = 0f;
+        if (Random.Range(1, 500) == 99)
+        {
+            float updatedUserHp = PlayerPrefs.GetFloat("userHp") + healAmount;
+            PlayerPrefs.SetFloat("userHp", updatedUserHp);
+            lerpTimer = 0f;
+        }
     }
 
     public void IncreaseHealth(int level)
     {
         float updatedMaxHp = PlayerPrefs.GetFloat("maxHp") + ((PlayerPrefs.GetFloat("userHp") * 0.01f) * (100 - level) * 0.1f);
         PlayerPrefs.SetFloat("userHp", updatedMaxHp);
+    }
+
+    public void AddWeaponStats(float xp, float hp)
+    {
+        float updatedXp = PlayerPrefs.GetFloat("userXp") + (float)xp;
+        PlayerPrefs.SetFloat("userXp", updatedXp);
+
+        float updatedHp = PlayerPrefs.GetFloat("userHp") + (float)hp;
+        PlayerPrefs.SetFloat("userHp", updatedHp);
+    }
+
+    IEnumerator HideAfterDelay(int seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        barXpHp.SetActive(false);
     }
 }

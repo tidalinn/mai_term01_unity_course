@@ -18,8 +18,8 @@ public class PlayerStats : MonoBehaviour
             PlayerPrefs.SetInt("userAttack", 30);
             PlayerPrefs.SetInt("userDefence", 50);
         }
-        attackText.text = "" + PlayerPrefs.GetInt("userAttack");
-        defenceText.text = "" + PlayerPrefs.GetInt("userDefence");
+        
+        SetStats();
     }
 
     // Update is called once per frame
@@ -36,8 +36,7 @@ public class PlayerStats : MonoBehaviour
         int updatedDefence = PlayerPrefs.GetInt("userDefence") + (int)Mathf.Floor((PlayerPrefs.GetInt("userDefence") * 0.1f) * (100 - level) * 0.01f);
         PlayerPrefs.SetInt("userDefence", updatedDefence);
 
-        attackText.text = "" + PlayerPrefs.GetInt("userAttack");
-        defenceText.text = "" + PlayerPrefs.GetInt("userDefence");
+        SetStats();
     }
 
     public void AddWeaponStats(int attack, int defence)
@@ -48,8 +47,7 @@ public class PlayerStats : MonoBehaviour
         int updatedDefence = PlayerPrefs.GetInt("userDefence") + defence;
         PlayerPrefs.SetInt("userDefence", updatedDefence);
 
-        attackText.text = "" + PlayerPrefs.GetInt("userAttack");
-        defenceText.text = "" + PlayerPrefs.GetInt("userDefence");
+        SetStats();
     }
 
     private void SetFontSize(int fontSize)
@@ -61,18 +59,18 @@ public class PlayerStats : MonoBehaviour
     private void CorrectFontSize(int attack, int defence)
     {
         if (attack > 99 || defence > 99)
-        {
             SetFontSize(32);
-        }
 
         else if (attack > 999 || defence > 999)
-        {
             SetFontSize(26);
-        }
 
         else if (attack > 9999 || defence > 9999)
-        {
             SetFontSize(22);
-        }
+    }
+
+    public void SetStats()
+    {
+        attackText.text = "" + PlayerPrefs.GetInt("userAttack");
+        defenceText.text = "" + PlayerPrefs.GetInt("userDefence");
     }
 }

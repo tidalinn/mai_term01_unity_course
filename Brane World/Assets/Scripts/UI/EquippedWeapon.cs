@@ -20,19 +20,23 @@ public class EquippedWeapon : MonoBehaviour
         noWeapon.SetActive(true);
 
         if (PlayerPrefs.GetInt("weaponLevel") > 0 && equippedItem.transform.childCount < 1)
+        {
             SetStats();
             GetComponent<InfoMessage>().DisplayInfo("text", "Оружие будет загружено вместе со сценой");
+        }
     }
 
     // Update is called once per frame
     void Update()
-    {
+    {            
         if (PlayerPrefs.GetInt("weaponLevel") > 0 && equippedItem.transform.childCount < 1)
         {
             GameObject weapon = GameObject.Find(PlayerPrefs.GetString("weaponPrefabName"));
             Equip(weapon, equippedItem, itemLayerName);
-
+            
+            GetComponent<PlayerStats>().SetStats();
             SetStats();
+
             noWeapon.SetActive(false);
         }
     }
@@ -60,8 +64,8 @@ public class EquippedWeapon : MonoBehaviour
         GameObject userWeapon = Instantiate(weapon.GetComponent<PinInfo>().item.itemPrefab, parentItem.transform);
         userWeapon.layer = LayerMask.NameToLayer(layerName);
         userWeapon.transform.position = parentItem.transform.position;
-        userWeapon.transform.Rotate(0, 90f, 0);
-        userWeapon.transform.localScale = userWeapon.transform.localScale / 2.5f;
+        userWeapon.transform.Rotate(0, -90f, 0);
+        userWeapon.transform.localScale = userWeapon.transform.localScale * 2.2f;
     }
 
     public void SetStats()

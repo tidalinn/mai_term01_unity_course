@@ -33,9 +33,7 @@ public class LevelSystem : MonoBehaviour
         }
         
         frontXpBar.fillAmount = PlayerPrefs.GetFloat("frontXpBar"); 
-        
         PlayerPrefs.SetFloat("requiredXp", CalculateRequiredXp());  
-
         levelText.text = AddZeroToLevel(PlayerPrefs.GetInt("userLevel"));
     }
 
@@ -43,9 +41,9 @@ public class LevelSystem : MonoBehaviour
     void Update()
     {   
         UpdateXpUI();
-        
-        if (Input.GetKeyDown(KeyCode.Equals))
-            GainExperienceScalable(20, PlayerPrefs.GetInt("userLevel"));
+
+        if (PlayerPrefs.GetFloat("userXpGained") > 0)
+            GainExperienceScalable(PlayerPrefs.GetFloat("userXpGained"), PlayerPrefs.GetInt("userLevel"));
 
         if (PlayerPrefs.GetFloat("userXp") > PlayerPrefs.GetFloat("requiredXp"))
             LevelUp();
@@ -88,7 +86,10 @@ public class LevelSystem : MonoBehaviour
             updatedUserXp = PlayerPrefs.GetFloat("userXp") + xpGained;
         }
 
+        GetComponent<InfoMessage>().DisplayInfo("info", "Вы одолели " + PlayerPrefs.GetString("enemyName") + "\nXP +" + Mathf.RoundToInt(xpGained));
+
         PlayerPrefs.SetFloat("userXp", updatedUserXp);
+        PlayerPrefs.SetFloat("userXpGained", 0);
 
         lerpTimer = 0f;
         delayTimer = 0f;
@@ -102,14 +103,21 @@ public class LevelSystem : MonoBehaviour
         PlayerPrefs.SetFloat("frontXpBar", 0f);
         frontXpBar.fillAmount = PlayerPrefs.GetFloat("frontXpBar");
         
-        float updatedUserXp = Mathf.RoundToInt(PlayerPrefs.GetFloat("userXp") - PlayerPrefs.GetFloat("requiredXp"));
+        float updatedUserXp = PlayerPrefs.GetFloat("userXp") - PlayerPrefs.GetFloat("requiredXp");
         PlayerPrefs.SetFloat("userXp", updatedUserXp);
+        PlayerPrefs.SetFloat("requiredXp", CalculateRequiredXp());
 
         GetComponent<PlayerHealth>().IncreaseHealth(PlayerPrefs.GetInt("userLevel"));
         GetComponent<PlayerStats>().IncreaseStats(PlayerPrefs.GetInt("userLevel"));
-        PlayerPrefs.SetFloat("requiredXp", CalculateRequiredXp());
 
         levelText.text = AddZeroToLevel(PlayerPrefs.GetInt("userLevel"));
+
+        string infoText = "Атака ↑ " + (int)PlayerPrefs.GetInt("userAttack") + "\nЗащита ↑ " + (int)PlayerPrefs.GetInt("userDefence") + "\nXP ↑ " + (int)PlayerPrefs.GetFloat("maxHp") + "\nHP ↑ " + (int)PlayerPrefs.GetFloat("userHp");
+        GetComponent<InfoMessage>().DisplayInfo("info", infoText);
+
+        GetComponent<PlayerStats>().AddWeaponStats(PlayerPrefs.GetInt("weaponAttack"), PlayerPrefs.GetInt("weaponDefence"));
+        GetComponent<PlayerHealth>().AddWeaponStats(PlayerPrefs.GetFloat("weaponXp"), PlayerPrefs.GetFloat("weaponHp"));
+        GetComponent<PlayerStats>().SetStats();
     }
 
     private int CalculateRequiredXp()
